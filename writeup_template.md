@@ -23,25 +23,37 @@ The goals / steps of this project are the following:
 
 ### 1. Describe your pipeline. As part of the description, explain how you modified the draw_lines() function.
 
-My pipeline consisted of 5 steps. First, I converted the images to grayscale, then I .... 
+My pipeline consisted of 6 steps.
 
-In order to draw a single line on the left and right lanes, I modified the draw_lines() function by ...
+- Convert Image to Grayscale.
+- Apply Gaussian Blur to lower the noises and smooth the image.
+- Apply Canny Edge detection to extract the edges.
+- Identify the coordinates of the polygon to extract the Region of interest
+- Apply Hough line transform on the ROI image to to detect and mark the line segments of the lane.
+- Apply/Draw the transform lines on the original image and display the detected lane lines on the image.
 
-If you'd like to include images to show how the pipeline works, here is how to include an image: 
-
-![alt text][image1]
+In order to draw a single line on the left and right lanes, I modified the draw_lines() function by creating a helper function "draw_lines_helper()" that identifies the left and right line lane points, averages the hough lines points and extrapolates the line segments using the equation of straight line(y = mx + c). Finally, the new lines are drawn on the original image. 
 
 
 ### 2. Identify potential shortcomings with your current pipeline
 
+Potential shortcomings:
 
-One potential shortcoming would be what would happen when ... 
-
-Another shortcoming could be ...
+- The algorithm is unreliable when the lanes are sightly curved due to fixed parameters and also the extrapolation is calculated based on the general equation of line.
+- The parametes are hard coded and hence not robust on new data.
+- The data doesnot contain any scenarios where other cars could possibly 
+block the view of lanes infront of us. Provided the case, the lane lines 
+may not be clear and could potentially lead to fatal issues.
+- Clearly Hough Transform fails on highly curved turns.
 
 
 ### 3. Suggest possible improvements to your pipeline
 
-A possible improvement would be to ...
+Possible improvements:
 
-Another potential improvement could be to ...
+- To fix the hardcoded parameters issue, one could employ Neural networks to 
+detect the lane lines, however we need to provide tons of data. If done it 
+could possibly fix the curved line detection issue as well.
+
+
+
