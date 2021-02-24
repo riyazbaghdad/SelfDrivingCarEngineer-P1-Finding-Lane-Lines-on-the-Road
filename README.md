@@ -10,46 +10,63 @@ When we drive, we use our eyes to decide where to go.  The lines on the road tha
 
 In this project you will detect lane lines in images using Python and OpenCV.  OpenCV means "Open-Source Computer Vision", which is a package that has many useful tools for analyzing images.  
 
-To complete the project, two files will be submitted: a file containing project code and a file containing a brief write up explaining your solution. We have included template files to be used both for the [code](https://github.com/udacity/CarND-LaneLines-P1/blob/master/P1.ipynb) and the [writeup](https://github.com/udacity/CarND-LaneLines-P1/blob/master/writeup_template.md).The code file is called P1.ipynb and the writeup template is writeup_template.md 
+# **Finding Lane Lines on the Road** 
 
-To meet specifications in the project, take a look at the requirements in the [project rubric](https://review.udacity.com/#!/rubrics/322/view)
+## Writeup Template
 
+### You can use this file as a template for your writeup if you want to submit it as a markdown file. But feel free to use some other method and submit a pdf if you prefer.
 
-Creating a Great Writeup
----
-For this project, a great writeup should provide a detailed response to the "Reflection" section of the [project rubric](https://review.udacity.com/#!/rubrics/322/view). There are three parts to the reflection:
-
-1. Describe the pipeline
-
-2. Identify any shortcomings
-
-3. Suggest possible improvements
-
-We encourage using images in your writeup to demonstrate how your pipeline works.  
-
-All that said, please be concise!  We're not looking for you to write a book here: just a brief description.
-
-You're not required to use markdown for your writeup.  If you use another method please just submit a pdf of your writeup. Here is a link to a [writeup template file](https://github.com/udacity/CarND-LaneLines-P1/blob/master/writeup_template.md). 
-
-
-The Project
 ---
 
-## If you have already installed the [CarND Term1 Starter Kit](https://github.com/udacity/CarND-Term1-Starter-Kit/blob/master/README.md) you should be good to go!   If not, you should install the starter kit to get started on this project. ##
+**Finding Lane Lines on the Road**
 
-**Step 1:** Set up the [CarND Term1 Starter Kit](https://github.com/udacity/CarND-Term1-Starter-Kit/blob/master/README.md) if you haven't already.
+The goals / steps of this project are the following:
+* Make a pipeline that finds lane lines on the road
+* Reflect on your work in a written report
 
-**Step 2:** Open the code in a Jupyter Notebook
 
-You will complete the project code in a Jupyter notebook.  If you are unfamiliar with Jupyter Notebooks, check out [Udacity's free course on Anaconda and Jupyter Notebooks](https://classroom.udacity.com/courses/ud1111) to get started.
+[//]: # (Image References)
 
-Jupyter is an Ipython notebook where you can run blocks of code and see results interactively.  All the code for this project is contained in a Jupyter notebook. To start Jupyter in your browser, use terminal to navigate to your project directory and then run the following command at the terminal prompt (be sure you've activated your Python 3 carnd-term1 environment as described in the [CarND Term1 Starter Kit](https://github.com/udacity/CarND-Term1-Starter-Kit/blob/master/README.md) installation instructions!):
+[image1]: ./examples/grayscale.jpg "Grayscale"
 
-`> jupyter notebook`
+---
 
-A browser window will appear showing the contents of the current directory.  Click on the file called "P1.ipynb".  Another browser window will appear displaying the notebook.  Follow the instructions in the notebook to complete the project.  
+### Reflection
 
-**Step 3:** Complete the project and submit both the Ipython notebook and the project writeup
+### 1. Describe your pipeline. As part of the description, explain how you modified the draw_lines() function.
 
-## How to write a README
-A well written README file can enhance your project and portfolio.  Develop your abilities to create professional README files by completing [this free course](https://www.udacity.com/course/writing-readmes--ud777).
+My pipeline consisted of 6 steps.
+
+- Convert Image to Grayscale.
+- Apply Gaussian Blur to lower the noises and smooth the image.
+- Apply Canny Edge detection to extract the edges.
+- Identify the coordinates of the polygon to extract the Region of interest
+- Apply Hough line transform on the ROI image to to detect and mark the line segments of the lane.
+- Apply/Draw the transform lines on the original image and display the detected lane lines on the image.
+
+In order to draw a single line on the left and right lanes, I modified the draw_lines() function by creating a helper function "draw_lines_helper()" that identifies the left and right line lane points, averages the hough lines points and extrapolates the line segments using the equation of straight line(y = mx + c). Finally, the new lines are drawn on the original image. 
+
+
+### 2. Identify potential shortcomings with your current pipeline
+
+Potential shortcomings:
+
+- The algorithm is unreliable when the lanes are sightly curved due to fixed parameters and also the extrapolation is calculated based on the general equation of line.
+- The parametes are hard coded and hence not robust on new data.
+- The data doesnot contain any scenarios where other cars could possibly 
+block the view of lanes infront of us. Provided the case, the lane lines 
+may not be clear and could potentially lead to fatal issues.
+- Clearly Hough Transform fails on highly curved turns.
+
+
+### 3. Suggest possible improvements to your pipeline
+
+Possible improvements:
+
+- To fix the hardcoded parameters issue, one could employ Neural networks to 
+detect the lane lines, however we need to provide tons of data. If done it 
+could possibly fix the curved line detection issue as well.
+
+
+
+
